@@ -1,6 +1,6 @@
 {
-  "name": "react-splitter-layout",
-  "version": "4.0.0",
+  "name": "react-splitter-layout-mod",
+  "version": "4.0.3",
   "description": "A simple split layout for React and modern browsers",
   "keywords": [
     "react",
@@ -12,12 +12,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zesik/react-splitter-layout"
+    "url": "https://github.com/PavelCree/react-splitter-layout-mod"
   },
   "bugs": {
-    "url": "https://github.com/zesik/react-splitter-layout/issues"
+    "url": "https://github.com/PavelCree/react-splitter-layout-mod/issues"
   },
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib/*"
   ],
@@ -43,6 +44,7 @@
     "react-router-dom": "^4.3.1",
     "react-test-renderer": "^16.0.0",
     "style-loader": "^0.23.1",
+    "typescript": "^3.8.2",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
@@ -69,5 +71,9 @@
       "raf/polyfill",
       "./test/setup.js"
     ]
+  },
+  "dependencies": {
+    "@types/react": "^16.9.23",
+    "ts-loader": "^6.2.1"
   }
 }

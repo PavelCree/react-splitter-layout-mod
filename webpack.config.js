@@ -8,7 +8,7 @@ module.exports = {
     './index.js'
   ],
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts']
   },
   module: {
     rules: [
@@ -16,6 +16,11 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: ['babel-loader', 'ts-loader']
       }
     ]
   },
@@ -23,6 +28,10 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: 'src/stylesheets/*',
+        flatten: true
+      },
+      {
+        from: 'src/types/*',
         flatten: true
       }
     ])
