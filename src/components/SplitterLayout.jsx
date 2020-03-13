@@ -161,7 +161,7 @@ class SplitterLayout extends React.Component {
     if (this.splitter && !this.props.percentage) {
       const containerRect = this.container.getBoundingClientRect();
       const splitterRect = this.splitter.getBoundingClientRect();
-      const { secondaryPaneSize, primaryPaneSize } = this.getSecondaryPaneSize(containerRect, splitterRect, {
+      const { secondaryPaneSize, primaryPaneSize } = this.getPaneSizes(containerRect, splitterRect, {
         left: splitterRect.left,
         top: splitterRect.top
       }, false);
