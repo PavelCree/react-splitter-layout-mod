@@ -88,6 +88,16 @@ export interface SplitterLayoutProps {
   onDragEnd?: () => void;
 
   /**
+   * Called when the size of primary pane is changed.
+   *
+   * Event handlers will be passed with a single parameter of number type representing
+   * new size of primary pane.
+   * When percentage is set to false, the value is in pixel size.
+   * When percentage is set to true, the value is in percentage.
+   */
+  onPrimaryPaneSizeChange?: (value: number) => void;
+
+  /**
    * Called when the size of secondary pane is changed.
    *
    * Event handlers will be passed with a single parameter of number type representing

@@ -31,6 +31,7 @@ class SplitterLayout extends React.Component {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleSplitterMouseDown = this.handleSplitterMouseDown.bind(this);
     this.state = {
+      primaryPaneSize: 0,
       secondaryPaneSize: 0,
       resizing: false
     };
@@ -44,6 +45,7 @@ class SplitterLayout extends React.Component {
     document.addEventListener('touchmove', this.handleTouchMove);
 
     let secondaryPaneSize;
+    let primaryPaneSize;
     if (typeof this.props.secondaryInitialSize !== 'undefined') {
       secondaryPaneSize = this.props.secondaryInitialSize;
     } else {
@@ -55,12 +57,12 @@ class SplitterLayout extends React.Component {
         // Simulate a splitter
         splitterRect = { width: DEFAULT_SPLITTER_SIZE, height: DEFAULT_SPLITTER_SIZE };
       }
-      secondaryPaneSize = this.getSecondaryPaneSize(containerRect, splitterRect, {
+      ({ secondaryPaneSize, primaryPaneSize } = this.getSecondaryPaneSize(containerRect, splitterRect, {
         left: containerRect.left + ((containerRect.width - splitterRect.width) / 2),
         top: containerRect.top + ((containerRect.height - splitterRect.height) / 2)
-      }, false);
+      }, false));
     }
-    this.setState({ secondaryPaneSize });
+    this.setState({ secondaryPaneSize, primaryPaneSize });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,6 +74,9 @@ class SplitterLayout extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.secondaryPaneSize !== this.state.secondaryPaneSize && this.props.onSecondaryPaneSizeChange) {
       this.props.onSecondaryPaneSizeChange(this.state.secondaryPaneSize);
+    }
+    if (prevState.primaryPaneSize !== this.state.primaryPaneSize && this.props.onPrimaryPaneSizeChange) {
+      this.props.onPrimaryPaneSizeChange(this.state.primaryPaneSize);
     }
     if (prevState.resizing !== this.state.resizing) {
       if (this.state.resizing) {
@@ -134,18 +139,18 @@ class SplitterLayout extends React.Component {
       secondaryPaneSize = Math.min(totalSize - splitterSize - this.props.primaryMinSize, this.props.secondaryMinSize);
     }
 
-    return secondaryPaneSize;
+    return { secondaryPaneSize, primaryPaneSize };
   }
 
   handleResize() {
     if (this.splitter && !this.props.percentage) {
       const containerRect = this.container.getBoundingClientRect();
       const splitterRect = this.splitter.getBoundingClientRect();
-      const secondaryPaneSize = this.getSecondaryPaneSize(containerRect, splitterRect, {
+      const { secondaryPaneSize, primaryPaneSize } = this.getSecondaryPaneSize(containerRect, splitterRect, {
         left: splitterRect.left,
         top: splitterRect.top
       }, false);
-      this.setState({ secondaryPaneSize });
+      this.setState({ secondaryPaneSize, primaryPaneSize });
     }
   }
 
@@ -153,12 +158,12 @@ class SplitterLayout extends React.Component {
     if (this.state.resizing) {
       const containerRect = this.container.getBoundingClientRect();
       const splitterRect = this.splitter.getBoundingClientRect();
-      const secondaryPaneSize = this.getSecondaryPaneSize(containerRect, splitterRect, {
+      const { secondaryPaneSize, primaryPaneSize } = this.getSecondaryPaneSize(containerRect, splitterRect, {
         left: e.clientX,
         top: e.clientY
       }, true);
       clearSelection();
-      this.setState({ secondaryPaneSize });
+      this.setState({ secondaryPaneSize, primaryPaneSize });
     }
   }
 
@@ -238,6 +243,7 @@ SplitterLayout.propTypes = {
   secondaryMinSize: PropTypes.number,
   onDragStart: PropTypes.func,
   onDragEnd: PropTypes.func,
+  onPrimaryPaneSizeChange: PropTypes.func,
   onSecondaryPaneSizeChange: PropTypes.func,
   children: PropTypes.arrayOf(PropTypes.node)
 };
@@ -253,6 +259,7 @@ SplitterLayout.defaultProps = {
   secondaryPaneSize: null,
   onDragStart: null,
   onDragEnd: null,
+  onPrimaryPaneSizeChange: null,
   onSecondaryPaneSizeChange: null,
   children: []
 };
